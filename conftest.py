@@ -18,15 +18,15 @@ def setup_browser():
 
     if not all([selenoid_login, selenoid_pass, selenoid_url]):
         raise ValueError(
-            "Не заданы переменные SELENOID_LOGIN, SELENOID_PASS или SELENOID_URL.\n"
-            "Убедитесь, что .env файл существует или переменные окружения заданы в Jenkins / CI."
+            "Ошибка: переменные SELENOID_LOGIN, SELENOID_PASS или SELENOID_URL не заданы. "
+            "Убедитесь, что .env существует или переменные переданы в окружение (например, через Jenkins)."
         )
 
     options = Options()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
-    capabilities = {
+    selenoid_capabilities = {
         "browserName": "chrome",
         "browserVersion": "128.0",
         "selenoid:options": {
@@ -36,7 +36,7 @@ def setup_browser():
         }
     }
 
-    options.capabilities.update(capabilities)
+    options.capabilities.update(selenoid_capabilities)
 
     driver = webdriver.Remote(
         command_executor=f"https://{selenoid_login}:{selenoid_pass}@{selenoid_url}/wd/hub",
