@@ -9,7 +9,7 @@ class EbayPage:
 
     def search(self, query: str):
         browser.element('#gh-ac').type(query)
-        browser.element('#gh-btn').click()
+        browser.element('#gh-search-btn').click()
         return self
 
     def should_see_results_with(self, text: str):
