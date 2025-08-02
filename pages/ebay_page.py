@@ -4,7 +4,7 @@ from selene import browser, have
 class EbayPage:
 
     def open(self):
-        browser.open('https://www.ebay.com')
+        browser.open('https://www.ebay.com/?_nkw=')
         return self
 
     def search(self, query: str):
