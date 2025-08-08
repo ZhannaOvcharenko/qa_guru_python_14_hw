@@ -42,6 +42,36 @@ class MainPage:
         # Цены на товары
         self.result_prices = browser.all('.s-item__price')
 
+        # Элементы хэдера
+        self.daily_deals_link = browser.element('a[title="Daily Deals"]')
+        self.help_contact_link = browser.element('a[title="Help & Contact"]')
+        self.sign_in_button = browser.element('#gh-ug a[href*="SignIn"]')
+        self.language_selector = browser.element('#gh-eb-Geo-a-default')
+
+        # Элементы футера
+        self.footer_links = browser.all('footer a')
+        self.footer_logo = browser.element('footer img[alt="eBay"]')
+
+        # Элементы карточки товара (на странице товара)
+        self.item_title_detail = browser.element('#itemTitle')
+        self.item_price_detail = browser.element('#prcIsum, #mm-saleDscPrc')
+        self.item_quantity_info = browser.element('#qtySubTxt')
+
+        # Элементы корзины
+        self.cart_item_titles = browser.all('.cart-bucket-lineitem .item-title')
+        self.checkout_button = browser.element('a[aria-label="Go to checkout"]')
+
+        # Дополнительные фильтры
+        self.condition_filter_section = browser.all('.x-refine__main__list').element_by(have.text('Condition'))
+        self.brand_filter_section = browser.all('.x-refine__main__list').element_by(have.text('Brand'))
+        self.apply_filter_button = browser.element('button[aria-label="Apply"]')
+
+        # Навигация (хлебные крошки)
+        self.breadcrumbs = browser.all('.srp-listings__breadcrumb span')
+
+        # Сообщения об ошибке / пустые результаты
+        self.error_message_block = browser.element('.srp-controls__count-heading')
+
     @allure.step("Открыть главную страницу eBay")
     def open(self):
         browser.open('https://www.ebay.com/')
