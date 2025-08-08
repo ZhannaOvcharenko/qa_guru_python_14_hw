@@ -1,8 +1,9 @@
 import allure
 from allure_commons.types import Severity
-from pages.main_page import main_page
+from pages.main_page import MainPage
 
-main_page = main_page()
+main_page = MainPage()
+
 
 @allure.id("1")
 @allure.tag("web")
@@ -116,4 +117,9 @@ def test_sort_by_price_ascending():
 @allure.suite("Обработка ошибок")
 @allure.title("Поведение при отсутствии результатов")
 @allure.link("https://www.ebay.com", name="eBay")
+def test_no_results_behavior():
+    with allure.step("Выполнить поиск по ключевому слову 'nonexistentitem'"):
+        main_page.open().search_for("nonexistentitem")
 
+    with allure.step("Проверить, что результат пуст"):
+        main_page.results_should_be_empty()
