@@ -16,7 +16,7 @@ class MainPage:
         self.search_button = browser.element('#gh-search-btn')
 
         # Результаты поиска
-        self.search_results = browser.all('li.s-item h3.s-item__title')
+        self.search_results = browser.all('li.s-item .s-item__title')
         self.item_prices = browser.all('li.s-item span.s-item__price')
         self.first_item = browser.element('li.s-item:not(.s-item--ad) a.s-item__link')
         self.breadcrumbs = browser.all('.breadcrumb li')
