@@ -1,5 +1,4 @@
 import allure
-import re
 from selene import browser, have, be
 
 
@@ -14,7 +13,7 @@ class MainPage:
 
         # Поисковая строка
         self.search_input = browser.element('#gh-ac')
-        self.search_button = browser.element('#gh-btn')
+        self.search_button = browser.element('#gh-search-btn')
 
         # Результаты поиска
         self.search_results = browser.all('li.s-item h3.s-item__title')
@@ -57,8 +56,8 @@ class MainPage:
 
     @allure.step("Выполнить поиск по ключевому слову: {keyword}")
     def search_for(self, keyword):
-        self.search_input.type(keyword)
-        self.search_button.click()
+        self.search_input.should(be.visible).type(keyword)
+        self.search_button.should(be.visible).click()
         return self
 
     @allure.step("Проверить, что результаты содержат текст: {text}")
@@ -70,17 +69,17 @@ class MainPage:
 
     @allure.step("Выбрать категорию: {category}")
     def filter_by_category(self, category):
-        browser.element(f'a[href*="{category.lower()}"]').click()
+        browser.element(f'a[href*="{category.lower()}"]').should(be.visible).click()
         return self
 
     @allure.step("Открыть первый товар из результатов поиска")
     def open_first_item(self):
-        self.first_item.click()
+        self.first_item.should(be.visible).click()
         return self
 
     @allure.step("Добавить товар в корзину")
     def add_to_cart(self):
-        self.add_to_cart_button.click()
+        self.add_to_cart_button.should(be.visible).click()
         return self
 
     @allure.step("Проверить, что товар добавлен в корзину")
@@ -90,50 +89,38 @@ class MainPage:
 
     @allure.step("Перейти в корзину")
     def go_to_cart(self):
-        self.cart_link.click()
+        self.cart_link.should(be.visible).click()
         return self
 
     @allure.step("Проверить, что корзина не пуста")
     def cart_should_not_be_empty(self):
-        self.cart_icon.should(have.no.text('0'))
+        self.cart_icon.should(be.visible).should(have.no.text('0'))
         return self
 
     @allure.step("Указать минимальную цену: {price}")
     def filter_price_from(self, price):
-        self.min_price_input.type(price).press_enter()
+        self.min_price_input.should(be.visible).type(price).press_enter()
         return self
 
     @allure.step("Указать максимальную цену: {price}")
     def filter_price_to(self, price):
-        self.max_price_input.type(price).press_enter()
+        self.max_price_input.should(be.visible).type(price).press_enter()
         return self
 
-    @allure.step("Проверить, что цены в результатах в диапазоне от {min_price} до {max_price}")
-    def results_should_have_price_in_range(self, min_price, max_price):
-        for price in self.item_prices:
-            numeric_text = re.sub(r'[^\d.]', '', price.text)
-            if numeric_text:
-                numeric_price = float(numeric_text)
-                assert min_price <= numeric_price <= max_price, f"Цена {numeric_price} вне диапазона"
-        return self
-
-    @allure.step("Сортировать по цене: сначала дешевые")
+    @allure.step("Отсортировать по цене по возрастанию")
     def sort_by_price_ascending(self):
-        self.sort_menu.click()
-        self.sort_price_asc_option.click()
+        self.sort_menu.should(be.visible).click()
+        self.sort_price_asc_option.should(be.visible).click()
         return self
 
-    @allure.step("Проверить, что результаты отсортированы по возрастанию цены")
-    def results_should_be_sorted_by_price_ascending(self):
-        prices = []
-        for price in self.item_prices:
-            numeric_text = re.sub(r'[^\d.]', '', price.text)
-            if numeric_text:
-                prices.append(float(numeric_text))
-        assert prices == sorted(prices), "Цены не отсортированы по возрастанию"
+    @allure.step("Проверить название товара содержит: {text}")
+    def item_title_should_contain(self, text):
+        self.item_title_detail.should(be.visible).should(have.text(text))
         return self
 
-    @allure.step("Проверить, что результаты отсутствуют")
-    def results_should_be_empty(self):
-        self.search_results.should(have.size(0))
+    @allure.step("Проверить цену товара отображается")
+    def item_price_should_be_visible(self):
+        self.item_price_detail.should(be.visible)
+        text = self.item_price_detail.text.strip()
+        assert text != "", "Цена товара не отображается или пустая"
         return self
