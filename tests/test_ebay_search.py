@@ -188,4 +188,3 @@ def test_condition_and_brand_filters():
     )
     main_page.condition_filter_section.should(be.visible)
     main_page.brand_filter_section.should(be.visible)
-
