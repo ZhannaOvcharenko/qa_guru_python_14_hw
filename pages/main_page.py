@@ -63,7 +63,7 @@ class MainPage:
     @allure.step("Проверить, что результаты содержат текст: {text}")
     def results_should_contain_text(self, text):
         self.search_results.should(have.size_greater_than(0))
-        texts = [element.text for element in self.search_results]
+        texts = self.search_results.texts()
         assert any(text.lower() in t.lower() for t in texts), f"Результаты не содержат текст '{text}'"
         return self
 
@@ -128,7 +128,7 @@ class MainPage:
     @allure.step("Проверить, что цены товаров в диапазоне от {min_price} до {max_price}")
     def results_should_have_price_in_range(self, min_price, max_price):
         self.item_prices.should(have.size_greater_than(0))
-        prices_texts = [element.text for element in self.item_prices]
+        prices_texts = self.item_prices.texts()
         prices = []
         for price_text in prices_texts:
             try:
