@@ -17,17 +17,17 @@ class MainPage:
         self.search_button = browser.element('#gh-btn')
 
         # Результаты поиска
-        self.search_results = browser.all('[data-testid="item-title"], h3.s-item__title')
-        self.item_prices = browser.all('span.s-item__price')
+        self.search_results = browser.all('li.s-item h3.s-item__title')
+        self.item_prices = browser.all('li.s-item span.s-item__price')
         self.first_item = browser.element('li.s-item:not(.s-item--ad) a.s-item__link')
-        self.breadcrumbs = browser.all('.srp-controls__control')
+        self.breadcrumbs = browser.all('.breadcrumb li')
 
         # Фильтры
         self.condition_filter_section = browser.element('div[aria-label="Condition"]')
         self.brand_filter_section = browser.element('div[aria-label="Brand"]')
-        self.min_price_input = browser.element('input[name="_udlo"]')
-        self.max_price_input = browser.element('input[name="_udhi"]')
-        self.sort_menu = browser.element('button[aria-label*="Sort"]')
+        self.min_price_input = browser.element('input[aria-label="Minimum Value in $"]')
+        self.max_price_input = browser.element('input[aria-label="Maximum Value in $"]')
+        self.sort_menu = browser.element('button[aria-label="Sort selector"]')
         self.sort_price_asc_option = browser.element('//a[contains(text(), "Price + Shipping: lowest first")]')
 
         # Карточка товара
