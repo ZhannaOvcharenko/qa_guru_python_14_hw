@@ -124,3 +124,18 @@ class MainPage:
         text = self.item_price_detail.text.strip()
         assert text != "", "Цена товара не отображается или пустая"
         return self
+
+    @allure.step("Проверить, что цены товаров в диапазоне от {min_price} до {max_price}")
+    def results_should_have_price_in_range(self, min_price, max_price):
+        self.item_prices.should(have.size_greater_than(0))
+        prices_texts = self.item_prices.texts()
+        prices = []
+        for price_text in prices_texts:
+            try:
+                price_num = float(price_text.replace("$", "").replace(",", "").strip())
+                prices.append(price_num)
+            except ValueError:
+                continue
+        assert all(min_price <= price <= max_price for price in prices), \
+            f"Найдены цены вне диапазона {min_price} - {max_price}: {prices}"
+        return self
