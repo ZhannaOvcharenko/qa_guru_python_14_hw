@@ -29,7 +29,7 @@ class MainPage:
 
         # Карточка товара
         self.item_title_detail = browser.element('#itemTitle')
-        self.item_price_detail = browser.element('.notranslate')  # уточнённый селектор
+        self.item_price_detail = browser.element('.notranslate')
         self.item_quantity_info = browser.element('#qtySubTxt')
 
         # Корзина
@@ -65,14 +65,16 @@ class MainPage:
 
     @allure.step("Применить фильтр состояния: {condition}")
     def apply_condition_filter(self, condition):
-        browser.element(f'//input[@type="checkbox" and contains(@aria-label, "{condition}")]') \
-            .should(be.clickable).click()
+        checkbox = browser.element(f'//input[@type="checkbox" and contains(@aria-label, "{condition}")]')
+        checkbox.wait_until(be.visible, timeout=20)
+        checkbox.should(be.clickable).click()
         return self
 
     @allure.step("Применить фильтр бренда: {brand}")
     def apply_brand_filter(self, brand):
-        browser.element(f'//input[@type="checkbox" and contains(@aria-label, "{brand}")]') \
-            .should(be.clickable).click()
+        checkbox = browser.element(f'//input[@type="checkbox" and contains(@aria-label, "{brand}")]')
+        checkbox.wait_until(be.visible, timeout=20)
+        checkbox.should(be.clickable).click()
         return self
 
     @allure.step("Применить фильтр по цене от {price_from} до {price_to}")
