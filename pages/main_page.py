@@ -54,8 +54,7 @@ class MainPage:
 
     @allure.step("Проверить, что результаты поиска содержат текст: {text}")
     def results_should_contain_text(self, text: str):
-        # texts() возвращает список строк всех элементов коллекции
-        results_texts = self.search_results.texts()
+        results_texts = [el.text for el in self.search_results]  # получаем текст каждого элемента
         assert any(text.lower() in t.lower() for t in results_texts), \
             f"Ни один результат поиска не содержит текст '{text}'"
         return self
