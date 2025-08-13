@@ -77,7 +77,7 @@ class MainPage:
 
     @allure.step("Применить фильтр бренда: {brand}")
     def apply_brand_filter(self, brand):
-        brand_section = browser.element("//div[@aria-label='Brand']")
+        brand_section = browser.element("//div[normalize-space()='Brand']")
         brand_section.should(be.visible).click()
 
         browser.element(f"//span[normalize-space()='{brand}']").should(be.visible).click()
