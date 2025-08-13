@@ -66,15 +66,13 @@ class MainPage:
     @allure.step("Применить фильтр состояния: {condition}")
     def apply_condition_filter(self, condition):
         checkbox = browser.element(f'//input[@type="checkbox" and contains(@aria-label, "{condition}")]')
-        checkbox.wait_until(be.visible, timeout=20)
-        checkbox.should(be.clickable).click()
+        checkbox.should(be.visible).should(be.clickable).click()
         return self
 
     @allure.step("Применить фильтр бренда: {brand}")
     def apply_brand_filter(self, brand):
         checkbox = browser.element(f'//input[@type="checkbox" and contains(@aria-label, "{brand}")]')
-        checkbox.wait_until(be.visible, timeout=20)
-        checkbox.should(be.clickable).click()
+        checkbox.should(be.visible).should(be.clickable).click()
         return self
 
     @allure.step("Применить фильтр по цене от {price_from} до {price_to}")
