@@ -1,6 +1,8 @@
 import allure
 from selene import browser, have, be
 
+browser.config.timeout = 20
+
 
 class MainPage:
 
@@ -34,8 +36,11 @@ class MainPage:
         self.cart_link = browser.element('#gh-cart-i')
 
         # Футер
-        self.footer_logo = browser.element('.gh-w')
+        self.footer_logo = browser.element('footer .gh-w')
         self.footer_links = browser.all('footer a')
+
+        # Популярные категории
+        self.popular_categories = browser.all('section[aria-label="Popular Categories"] a')
 
     @allure.step("Открыть главную страницу eBay")
     def open_ebay_main_page(self):
@@ -93,4 +98,9 @@ class MainPage:
     def check_condition_and_brand_filters(self):
         self.condition_filter_section.should(be.visible)
         self.brand_filter_section.should(be.visible)
+        return self
+
+    @allure.step("Проверить отображение популярных категорий")
+    def popular_categories_should_be_visible(self):
+        self.popular_categories.should(have.size_greater_than(0))
         return self
