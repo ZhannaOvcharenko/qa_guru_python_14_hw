@@ -29,7 +29,7 @@ class MainPage:
 
         # Карточка товара
         self.item_title_detail = browser.element('#itemTitle')
-        self.item_price_detail = browser.element('#prcIsum, .notranslate')
+        self.item_price_detail = browser.element('.notranslate')  # уточнённый селектор
         self.item_quantity_info = browser.element('#qtySubTxt')
 
         # Корзина
