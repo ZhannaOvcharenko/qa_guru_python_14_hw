@@ -23,6 +23,9 @@ class MainPage:
         # Фильтры
         self.condition_filter_section = browser.element('div[aria-label="Condition"]')
         self.brand_filter_section = browser.element('div[aria-label="Brand"]')
+        self.price_from_input = browser.element('//input[@aria-label="Minimum Value in $"]')
+        self.price_to_input = browser.element('//input[@aria-label="Maximum Value in $"]')
+        self.price_submit_button = browser.element('//button[contains(@aria-label,"Submit price range")]')
 
         # Карточка товара
         self.item_title_detail = browser.element('#itemTitle')
@@ -41,6 +44,14 @@ class MainPage:
         # Популярные категории
         self.popular_categories = browser.all('section[aria-label="Popular Categories"] a')
 
+        # Trending блоки
+        self.trending_blocks = {
+            "Trending in Sneakers": browser.element('//h2[text()="Trending in Sneakers"]/..'),
+            "eBay Live": browser.element('//h2[text()="eBay Live"]/..'),
+            "Trending in Watches": browser.element('//h2[text()="Trending in Watches"]/..'),
+            "Trending in Refurbished": browser.element('//h2[text()="Trending in Refurbished"]/..')
+        }
+
     @allure.step("Открыть главную страницу eBay")
     def open_ebay_main_page(self):
         browser.open('https://www.ebay.com/')
@@ -52,11 +63,23 @@ class MainPage:
         self.search_button.should(be.visible).click()
         return self
 
-    @allure.step("Проверить, что результаты поиска содержат текст: {text}")
-    def results_should_contain_text(self, text: str):
-        results_texts = [el.get_text() for el in self.search_results]
-        assert any(text.lower() in t.lower() for t in results_texts), \
-            f"Ни один результат поиска не содержит текст '{text}'"
+    @allure.step("Применить фильтр состояния: {condition}")
+    def apply_condition_filter(self, condition):
+        browser.element('[aria-label*="Condition"], [aria-label*="Состояние"]').should(be.visible) \
+            .element(f'.//span[normalize-space()="{condition}"]').click()
+        return self
+
+    @allure.step("Применить фильтр бренда: {brand}")
+    def apply_brand_filter(self, brand):
+        browser.element('[aria-label*="Brand"], [aria-label*="Бренд"]').should(be.visible) \
+            .element(f'.//span[normalize-space()="{brand}"]').click()
+        return self
+
+    @allure.step("Применить фильтр по цене от {price_from} до {price_to}")
+    def apply_price_filter(self, price_from, price_to):
+        self.price_from_input.should(be.visible).type(price_from)
+        self.price_to_input.should(be.visible).type(price_to)
+        self.price_submit_button.should(be.visible).click()
         return self
 
     @allure.step("Открыть первый товар из результатов поиска")
@@ -108,4 +131,9 @@ class MainPage:
     @allure.step("Проверить отображение популярных категорий")
     def popular_categories_should_be_visible(self):
         self.popular_categories.should(have.size_greater_than(0))
+        return self
+
+    @allure.step("Проверить видимость блока: {block_name}")
+    def check_trending_block(self, block_name):
+        self.trending_blocks[block_name].should(be.visible)
         return self

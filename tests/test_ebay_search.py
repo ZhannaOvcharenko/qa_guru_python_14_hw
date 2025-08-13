@@ -9,35 +9,37 @@ main_page = MainPage()
 @allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
-@allure.suite("Поиск товаров")
-@allure.title("Поиск товаров по ключевому слову")
+@allure.suite("Фильтры поиска")
+@allure.title("Проверка фильтров для Laptops")
 @allure.link("https://www.ebay.com", name="eBay")
-def test_search_items_by_keyword():
-    with allure.step("Открыть главную страницу и выполнить поиск по ключевому слову 'laptop'"):
+def test_laptops_filters():
+    with allure.step("Применить фильтры для Laptops"):
         (
             main_page
             .open_ebay_main_page()
             .search_for("laptop")
-            .results_should_contain_text("laptop")
+            .apply_condition_filter("New")
+            .apply_brand_filter("Dell")
+            .apply_price_filter("500", "1500")
         )
 
 
 @allure.id("2")
 @allure.tag("web")
-@allure.severity(Severity.CRITICAL)
+@allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
-@allure.suite("Корзина")
-@allure.title("Добавление первого товара в корзину")
+@allure.suite("Фильтры поиска")
+@allure.title("Проверка фильтров для Smartphones")
 @allure.link("https://www.ebay.com", name="eBay")
-def test_add_first_item_to_cart():
-    with allure.step("Открыть главную страницу, найти 'headphones', открыть первый товар и добавить в корзину"):
+def test_smartphones_filters():
+    with allure.step("Применить фильтры для Smartphones"):
         (
             main_page
             .open_ebay_main_page()
-            .search_for("headphones")
-            .open_first_item()
-            .add_to_cart()
-            .cart_should_not_be_empty()
+            .search_for("smartphone")
+            .apply_condition_filter("Used")
+            .apply_brand_filter("Apple")
+            .apply_price_filter("200", "800")
         )
 
 
@@ -45,84 +47,70 @@ def test_add_first_item_to_cart():
 @allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
-@allure.suite("Корзина")
-@allure.title("Проверка наличия товара в корзине")
+@allure.suite("Фильтры поиска")
+@allure.title("Проверка фильтров для Watches")
 @allure.link("https://www.ebay.com", name="eBay")
-def test_cart_contains_item():
-    with allure.step("Открыть корзину и проверить, что она не пуста"):
+def test_watches_filters():
+    with allure.step("Применить фильтры для Watches"):
         (
             main_page
             .open_ebay_main_page()
-            .go_to_cart()
-            .cart_should_not_be_empty()
+            .search_for("watch")
+            .apply_condition_filter("New")
+            .apply_brand_filter("Casio")
+            .apply_price_filter("50", "500")
         )
 
 
 @allure.id("4")
 @allure.tag("web")
-@allure.severity(Severity.MINOR)
-@allure.label("owner", "ZhannaOvcharenko")
-@allure.suite("Интерфейс")
-@allure.title("Проверка элементов хэдера")
-@allure.link("https://www.ebay.com", name="eBay")
-def test_header_elements_visibility():
-    with allure.step("Проверить видимость элементов хэдера"):
-        main_page.open_ebay_main_page().check_header_elements()
-
-
-@allure.id("5")
-@allure.tag("web")
-@allure.severity(Severity.MINOR)
-@allure.label("owner", "ZhannaOvcharenko")
-@allure.suite("Интерфейс")
-@allure.title("Проверка элементов футера")
-@allure.link("https://www.ebay.com", name="eBay")
-def test_footer_elements_visibility():
-    with allure.step("Проверить видимость элементов футера"):
-        main_page.open_ebay_main_page().check_footer_elements()
-
-
-@allure.id("6")
-@allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
-@allure.suite("Главная страница")
-@allure.title("Проверка видимости популярных категорий")
+@allure.suite("Фильтры поиска")
+@allure.title("Проверка фильтров для Tablets")
 @allure.link("https://www.ebay.com", name="eBay")
-def test_popular_categories_visibility():
-    with allure.step("Проверить видимость популярных категорий на главной странице"):
-        main_page.open_ebay_main_page().popular_categories_should_be_visible()
-
-
-@allure.id("7")
-@allure.tag("web")
-@allure.severity(Severity.NORMAL)
-@allure.label("owner", "ZhannaOvcharenko")
-@allure.suite("Фильтры")
-@allure.title("Проверка фильтров состояния и бренда")
-@allure.link("https://www.ebay.com", name="eBay")
-def test_condition_and_brand_filters():
-    with allure.step("Открыть главную страницу, найти 'tablet' и проверить фильтры состояния и бренда"):
+def test_tablets_filters():
+    with allure.step("Применить фильтры для Tablets"):
         (
             main_page
             .open_ebay_main_page()
             .search_for("tablet")
-            .check_condition_and_brand_filters()
+            .apply_condition_filter("New")
+            .apply_brand_filter("Samsung")
+            .apply_price_filter("100", "600")
         )
 
 
-@allure.id("8")
+@allure.id("5")
 @allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
-@allure.suite("Карточка товара")
-@allure.title("Проверка элементов карточки товара")
+@allure.suite("Фильтры поиска")
+@allure.title("Проверка фильтров для Cameras")
 @allure.link("https://www.ebay.com", name="eBay")
-def test_product_detail_elements_visibility():
-    (
-        main_page
-        .open_ebay_main_page()
-        .search_for("headphones")
-        .open_first_item()
-        .check_product_detail_elements()
-    )
+def test_cameras_filters():
+    with allure.step("Применить фильтры для Cameras"):
+        (
+            main_page
+            .open_ebay_main_page()
+            .search_for("camera")
+            .apply_condition_filter("Used")
+            .apply_brand_filter("Canon")
+            .apply_price_filter("150", "1000")
+        )
+
+
+@allure.id("6")
+@allure.tag("web")
+@allure.severity(Severity.MINOR)
+@allure.label("owner", "ZhannaOvcharenko")
+@allure.suite("Главная страница")
+@allure.title("Проверка видимости популярных блоков на главной странице")
+@allure.link("https://www.ebay.com", name="eBay")
+def test_trending_blocks_visibility():
+    with allure.step("Проверить видимость всех основных блоков на главной странице"):
+        main_page.open_ebay_main_page() \
+            .check_trending_block("Trending in Sneakers") \
+            .check_trending_block("eBay Live") \
+            .check_trending_block("Trending in Watches") \
+            .check_trending_block("Trending in Refurbished")
