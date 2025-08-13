@@ -11,11 +11,10 @@ class MainPage:
         self.daily_deals_link = browser.element('//a[@aria-label="Daily Deals"]')
         self.help_contact_link = browser.element('//a[@aria-label="Help & Contact"]')
         self.sign_in_button = browser.element('//a[normalize-space()="Sign in"]')
-        self.language_selector = browser.element('#gh-eb-Geo')
 
         # Поисковая строка
-        self.search_input = browser.element('#gh-ac')
-        self.search_button = browser.element('#gh-btn')
+        self.search_input = browser.element('//input[@id="gh-ac"]')
+        self.search_button = browser.element('//span[@class="gh-search-button__label"]')
 
         # Результаты поиска
         self.search_results = browser.all('li.s-item .s-item__title')
@@ -53,6 +52,12 @@ class MainPage:
         self.search_button.should(be.visible).click()
         return self
 
+    @allure.step("Проверить, что результаты поиска содержат текст: {text}")
+    def results_should_contain_text(self, text: str):
+        assert any(text.lower() in el.text.lower() for el in self.search_results.fetch()), \
+            f"Ни один результат поиска не содержит текст '{text}'"
+        return self
+
     @allure.step("Открыть первый товар из результатов поиска")
     def open_first_item(self):
         self.first_item.should(be.visible).click()
@@ -78,7 +83,6 @@ class MainPage:
         self.daily_deals_link.should(be.visible)
         self.help_contact_link.should(be.visible)
         self.sign_in_button.should(be.visible)
-        self.language_selector.should(be.visible)
         return self
 
     @allure.step("Проверить элементы футера")

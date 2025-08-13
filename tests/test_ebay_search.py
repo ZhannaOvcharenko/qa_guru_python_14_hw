@@ -109,3 +109,20 @@ def test_condition_and_brand_filters():
             .search_for("tablet")
             .check_condition_and_brand_filters()
         )
+
+
+@allure.id("8")
+@allure.tag("web")
+@allure.severity(Severity.NORMAL)
+@allure.label("owner", "ZhannaOvcharenko")
+@allure.suite("Карточка товара")
+@allure.title("Проверка элементов карточки товара")
+@allure.link("https://www.ebay.com", name="eBay")
+def test_product_detail_elements_visibility():
+    (
+        main_page
+        .open_ebay_main_page()
+        .search_for("headphones")
+        .open_first_item()
+        .check_product_detail_elements()
+    )
