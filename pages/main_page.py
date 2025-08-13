@@ -65,14 +65,14 @@ class MainPage:
 
     @allure.step("Применить фильтр состояния: {condition}")
     def apply_condition_filter(self, condition):
-        browser.element('[aria-label*="Condition"], [aria-label*="Состояние"]').should(be.visible) \
-            .element(f'.//span[normalize-space()="{condition}"]').click()
+        browser.element(f'//input[@type="checkbox" and contains(@aria-label, "{condition}")]') \
+            .should(be.clickable).click()
         return self
 
     @allure.step("Применить фильтр бренда: {brand}")
     def apply_brand_filter(self, brand):
-        browser.element('[aria-label*="Brand"], [aria-label*="Бренд"]').should(be.visible) \
-            .element(f'.//span[normalize-space()="{brand}"]').click()
+        browser.element(f'//input[@type="checkbox" and contains(@aria-label, "{brand}")]') \
+            .should(be.clickable).click()
         return self
 
     @allure.step("Применить фильтр по цене от {price_from} до {price_to}")
