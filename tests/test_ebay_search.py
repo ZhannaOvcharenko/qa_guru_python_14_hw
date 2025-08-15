@@ -109,8 +109,11 @@ def test_cameras_filters():
 @allure.link("https://www.ebay.com", name="eBay")
 def test_trending_blocks_visibility():
     with allure.step("Проверить видимость всех основных блоков на главной странице"):
-        main_page.open_ebay_main_page() \
-            .check_trending_block("Trending in Sneakers") \
-            .check_trending_block("eBay Live") \
-            .check_trending_block("Trending in Watches") \
+        (
+            main_page
+            .open_ebay_main_page()
+            .check_trending_block("Trending in Sneakers")
+            .check_trending_block("eBay Live")
+            .check_trending_block("Trending in Watches")
             .check_trending_block("Trending in Refurbished")
+        )
