@@ -1,5 +1,6 @@
 import allure
 from selene import browser, have, be
+from selenium.common import TimeoutException
 
 browser.config.timeout = 20
 
@@ -77,10 +78,21 @@ class MainPage:
 
     @allure.step("Применить фильтр бренда: {brand}")
     def apply_brand_filter(self, brand):
-        brand_section = browser.element("//div[normalize-space()='Brand']")
+        brand_section = browser.element(
+            "//h3[.//text()='Brand']//div[contains(@class,'x-refine__item__title-container')]")
         brand_section.should(be.visible).click()
 
-        browser.element(f"//span[normalize-space()='{brand}']").should(be.visible).click()
+        limited_brand = browser.all(f"//div[@aria-controls]/..//span[normalize-space()='{brand}']")
+        if limited_brand:
+            limited_brand.first.should(be.visible).click()
+            return self
+
+        see_all_button = browser.all("//button[normalize-space()='See all']")
+        if see_all_button:
+            see_all_button.first.should(be.visible).click()
+            full_brand = browser.element(
+                f"//div[contains(@class,'x-refine__multi-select')]//span[normalize-space()='{brand}']")
+            full_brand.should(be.visible).click()
 
         return self
 

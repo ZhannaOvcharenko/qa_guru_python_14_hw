@@ -56,7 +56,7 @@ def test_watches_filters():
             main_page
             .open_ebay_main_page()
             .search_for("watch")
-            .apply_condition_filter("New")
+            .apply_condition_filter("New with tags")
             .apply_brand_filter("Casio")
             .apply_price_filter("50", "500")
         )
