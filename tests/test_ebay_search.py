@@ -11,7 +11,6 @@ main_page = MainPage()
 @allure.label("owner", "ZhannaOvcharenko")
 @allure.suite("Фильтры поиска")
 @allure.title("Проверка фильтров для Laptops")
-@allure.link("https://www.ebay.com", name="eBay")
 def test_laptops_filters():
     with allure.step("Применить фильтры для Laptops"):
         (
@@ -30,7 +29,6 @@ def test_laptops_filters():
 @allure.label("owner", "ZhannaOvcharenko")
 @allure.suite("Фильтры поиска")
 @allure.title("Проверка фильтров для Smartphones")
-@allure.link("https://www.ebay.com", name="eBay")
 def test_smartphones_filters():
     with allure.step("Применить фильтры для Smartphones"):
         (
@@ -49,7 +47,6 @@ def test_smartphones_filters():
 @allure.label("owner", "ZhannaOvcharenko")
 @allure.suite("Фильтры поиска")
 @allure.title("Проверка фильтров для Watches")
-@allure.link("https://www.ebay.com", name="eBay")
 def test_watches_filters():
     with allure.step("Применить фильтры для Watches"):
         (
@@ -68,7 +65,6 @@ def test_watches_filters():
 @allure.label("owner", "ZhannaOvcharenko")
 @allure.suite("Фильтры поиска")
 @allure.title("Проверка фильтров для Tablets")
-@allure.link("https://www.ebay.com", name="eBay")
 def test_tablets_filters():
     with allure.step("Применить фильтры для Tablets"):
         (
@@ -87,7 +83,6 @@ def test_tablets_filters():
 @allure.label("owner", "ZhannaOvcharenko")
 @allure.suite("Фильтры поиска")
 @allure.title("Проверка фильтров для Cameras")
-@allure.link("https://www.ebay.com", name="eBay")
 def test_cameras_filters():
     with allure.step("Применить фильтры для Cameras"):
         (
@@ -106,7 +101,6 @@ def test_cameras_filters():
 @allure.label("owner", "ZhannaOvcharenko")
 @allure.suite("Главная страница")
 @allure.title("Проверка видимости популярных блоков на главной странице")
-@allure.link("https://www.ebay.com", name="eBay")
 def test_trending_blocks_visibility():
     with allure.step("Проверить видимость всех основных блоков на главной странице"):
         (
