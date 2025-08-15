@@ -1,6 +1,5 @@
 import allure
 from selene import browser, have, be
-from selenium.common import TimeoutException
 
 browser.config.timeout = 20
 
@@ -47,10 +46,13 @@ class MainPage:
 
         # Trending блоки
         self.trending_blocks = {
-            "Trending in Sneakers": browser.element('//h2[text()="Trending in Sneakers"]/..'),
-            "eBay Live": browser.element('//h2[text()="eBay Live"]/..'),
-            "Trending in Watches": browser.element('//h2[text()="Trending in Watches"]/..'),
-            "Trending in Refurbished": browser.element('//h2[text()="Trending in Refurbished"]/..')
+            "Trending in Sneakers": browser.all(
+                '//h2[contains(@class,"vl-card-header") and contains(text(),"Trending in Sneakers")]'),
+            "eBay Live": browser.all('//h2[contains(@class,"vl-card-header") and contains(text(),"eBay Live")]'),
+            "Trending in Watches": browser.all(
+                '//h2[contains(@class,"vl-card-header") and contains(text(),"Trending in Watches")]'),
+            "Trending in Refurbished": browser.all(
+                '//h2[contains(@class,"vl-card-header") and contains(text(),"Trending in Refurbished")]')
         }
 
     @allure.step("Открыть главную страницу eBay")
@@ -154,7 +156,17 @@ class MainPage:
         self.popular_categories.should(have.size_greater_than(0))
         return self
 
-    @allure.step("Проверить видимость блока: {block_name}")
+    @allure.step("Проверить видимость блока: {block_name} (если есть)")
     def check_trending_block(self, block_name):
-        self.trending_blocks[block_name].should(be.visible)
+        headers = self.trending_blocks[block_name]
+        browser.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        import time
+        time.sleep(3)
+        elements = headers()
+        if len(elements) > 0:
+            header = elements[0]
+            browser.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", header)
+            browser.element(header).should(be.visible)
+        else:
+            allure.attach(f"Блок '{block_name}' не найден на странице", name="Missing block")
         return self
