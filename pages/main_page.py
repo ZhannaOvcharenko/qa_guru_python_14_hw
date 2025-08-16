@@ -148,10 +148,10 @@ class MainPage:
 
     @allure.step("Проверить видимость блока '{block_name}' на главной странице")
     def check_block_visible(self, block_name: str):
-        xpath = self.main_blocks.get(block_name)
-        if not xpath:
+        elements = self.main_blocks.get(block_name)
+        if not elements:
             raise ValueError(f"No XPath defined for block '{block_name}'")
-        xpath.first.scroll_to().should(be.visible)
+        elements.first.should(be.visible)
         return self
 
     @allure.step("Принять cookies, если баннер виден")
