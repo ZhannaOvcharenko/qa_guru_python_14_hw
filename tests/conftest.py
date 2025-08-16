@@ -38,7 +38,7 @@ def setup_browser():
     )
 
     browser.config.driver = driver
-    browser.config.base_url = "https://www.ebay.com"
+    browser.config.base_url = "https://www.ebay.com/?geoip=US"
     browser.driver.maximize_window()
     browser.config.timeout = 10
 

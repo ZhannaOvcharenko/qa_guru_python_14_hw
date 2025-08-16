@@ -16,6 +16,7 @@ def test_laptops_filters():
         (
             main_page
             .open_ebay_main_page()
+            .accept_cookies_if_present()
             .search_for("laptop")
             .apply_condition_filter("New")
             .apply_brand_filter("Dell")
@@ -34,6 +35,7 @@ def test_smartphones_filters():
         (
             main_page
             .open_ebay_main_page()
+            .accept_cookies_if_present()
             .search_for("smartphone")
             .apply_condition_filter("Used")
             .apply_brand_filter("Apple")
@@ -52,6 +54,7 @@ def test_watches_filters():
         (
             main_page
             .open_ebay_main_page()
+            .accept_cookies_if_present()
             .search_for("watch")
             .apply_condition_filter("New with tags")
             .apply_brand_filter("Casio")
@@ -70,6 +73,7 @@ def test_tablets_filters():
         (
             main_page
             .open_ebay_main_page()
+            .accept_cookies_if_present()
             .search_for("tablet")
             .apply_condition_filter("New")
             .apply_brand_filter("Samsung")
@@ -88,6 +92,7 @@ def test_cameras_filters():
         (
             main_page
             .open_ebay_main_page()
+            .accept_cookies_if_present()
             .search_for("camera")
             .apply_condition_filter("Used")
             .apply_brand_filter("Canon")
@@ -106,6 +111,7 @@ def test_trending_blocks_visibility():
         (
             main_page
             .open_ebay_main_page()
+            .accept_cookies_if_present()
             .check_trending_block("Trending in Sneakers")
             .check_trending_block("eBay Live")
             .check_trending_block("Trending in Watches")

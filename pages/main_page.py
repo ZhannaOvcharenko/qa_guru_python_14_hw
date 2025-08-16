@@ -57,7 +57,7 @@ class MainPage:
 
     @allure.step("Открыть главную страницу eBay")
     def open_ebay_main_page(self):
-        browser.open('https://www.ebay.com/')
+        browser.open('/')
         return self
 
     @allure.step("Выполнить поиск по ключевому слову: {keyword}")
@@ -169,4 +169,16 @@ class MainPage:
             browser.element(header).should(be.visible)
         else:
             allure.attach(f"Блок '{block_name}' не найден на странице", name="Missing block")
+        return self
+
+    @allure.step("Принять cookies, если баннер виден")
+    def accept_cookies_if_present(self):
+        cookie_banner = browser.all("//button[normalize-space()='Accept All']")
+        if cookie_banner.with_(timeout=5).wait.until(have.size_greater_than_or_equal(0)):
+            if cookie_banner:
+                cookie_banner.first.click()
+                allure.attach("Cookie баннер принят", name="Cookies", attachment_type=allure.attachment_type.TEXT)
+        else:
+            allure.attach("Cookie баннер отсутствует", name="Cookies", attachment_type=allure.attachment_type.TEXT)
+
         return self
