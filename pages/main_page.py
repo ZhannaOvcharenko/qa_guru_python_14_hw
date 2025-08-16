@@ -147,7 +147,7 @@ class MainPage:
 
     @allure.step("Проверить видимость блока '{block_name}' на главной странице")
     def check_block_visible(self, block_name: str):
-        xpath = self.main_blocks[block_name]
+        xpath = self.main_blocks.get(block_name)
         if not xpath:
             raise ValueError(f"No XPath defined for block '{block_name}'")
         xpath.first.scroll_to().should(be.visible)
