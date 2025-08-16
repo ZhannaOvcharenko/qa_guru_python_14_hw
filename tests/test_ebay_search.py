@@ -106,14 +106,14 @@ def test_cameras_filters():
 @allure.label("owner", "ZhannaOvcharenko")
 @allure.suite("Главная страница")
 @allure.title("Проверка видимости популярных блоков на главной странице")
-def test_trending_blocks_visibility():
+def test_main_blocks_visibility():
     with allure.step("Проверить видимость всех основных блоков на главной странице"):
         (
             main_page
             .open_ebay_main_page()
             .accept_cookies_if_present()
-            .check_trending_block("Trending in Sneakers")
-            .check_trending_block("eBay Live")
-            .check_trending_block("Trending in Watches")
-            .check_trending_block("Trending in Refurbished")
+            .check_block_visible("Buy")
+            .check_block_visible("Sell")
+            .check_block_visible("About eBay")
+            .check_block_visible("Help & Contact")
         )

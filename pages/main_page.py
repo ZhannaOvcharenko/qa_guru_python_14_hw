@@ -1,6 +1,5 @@
 import allure
 from selene import browser, have, be
-from selenium.common import TimeoutException
 
 browser.config.timeout = 20
 
@@ -42,18 +41,12 @@ class MainPage:
         self.footer_logo = browser.element('footer .gh-w')
         self.footer_links = browser.all('footer a')
 
-        # Популярные категории
-        self.popular_categories = browser.all('section[aria-label="Popular Categories"] a')
-
-        # Trending блоки
-        self.trending_blocks = {
-            "Trending in Sneakers": browser.all(
-                '//h2[contains(@class,"vl-card-header") and contains(text(),"Trending in Sneakers")]'),
-            "eBay Live": browser.all('//h2[contains(@class,"vl-card-header") and contains(text(),"eBay Live")]'),
-            "Trending in Watches": browser.all(
-                '//h2[contains(@class,"vl-card-header") and contains(text(),"Trending in Watches")]'),
-            "Trending in Refurbished": browser.all(
-                '//h2[contains(@class,"vl-card-header") and contains(text(),"Trending in Refurbished")]')
+        # Основные блоки на главной странице
+        self.main_blocks = {
+            "Buy": browser.all('//a[normalize-space()="Buy"]'),
+            "Sell": browser.all('//a[normalize-space()="Sell"]'),
+            "About eBay": browser.all('//a[normalize-space()="About eBay"]'),
+            "Help & Contact": browser.all('//a[normalize-space()="Help & Contact"]')
         }
 
     @allure.step("Открыть главную страницу eBay")
@@ -152,34 +145,17 @@ class MainPage:
         self.brand_filter_section.should(be.visible)
         return self
 
-    @allure.step("Проверить отображение популярных категорий")
-    def popular_categories_should_be_visible(self):
-        self.popular_categories.should(have.size_greater_than(0))
-        return self
-
-    @allure.step("Проверить видимость блока: {block_name} (если есть)")
-    def check_trending_block(self, block_name):
-        headers = self.trending_blocks[block_name]
-        browser.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        import time
-        time.sleep(2)
-        try:
-            headers.with_(timeout=5).first.should(be.visible)
-            browser.driver.execute_script(
-                "arguments[0].scrollIntoView({block: 'center'});",
-                headers.first.get_actual_webelement()
-            )
-        except TimeoutException:
-            allure.attach(f"Блок '{block_name}' не найден на странице", name="Missing block",
-                          attachment_type=allure.attachment_type.TEXT)
+    @allure.step("Проверить видимость блока '{block_name}' на главной странице")
+    def check_block_visible(self, block_name: str):
+        xpath = self.main_blocks[block_name]
+        if not xpath:
+            raise ValueError(f"No XPath defined for block '{block_name}'")
+        xpath.first.scroll_to().should(be.visible)
         return self
 
     @allure.step("Принять cookies, если баннер виден")
     def accept_cookies_if_present(self):
         cookie_banner = browser.all("//button[normalize-space()='Accept All']")
-        try:
-            cookie_banner.with_(timeout=5).first.should(be.visible).click()
-            allure.attach("Cookie баннер принят", name="Cookies", attachment_type=allure.attachment_type.TEXT)
-        except TimeoutException:
-            allure.attach("Cookie баннер отсутствует", name="Cookies", attachment_type=allure.attachment_type.TEXT)
+        if cookie_banner.with_(timeout=5).first.present():
+            cookie_banner.first.click()
         return self
