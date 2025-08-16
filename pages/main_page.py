@@ -1,5 +1,6 @@
 import allure
 from selene import browser, have, be
+from selenium.common import TimeoutException
 
 browser.config.timeout = 20
 
@@ -155,7 +156,8 @@ class MainPage:
 
     @allure.step("Принять cookies, если баннер виден")
     def accept_cookies_if_present(self):
-        cookie_banner = browser.all("//button[normalize-space()='Accept All']")
-        if cookie_banner.with_(timeout=5).first.present():
-            cookie_banner.first.click()
+        try:
+            browser.all("//button[normalize-space()='Accept All']").with_(timeout=5).first.should(be.visible).click()
+        except TimeoutException:
+            pass
         return self
