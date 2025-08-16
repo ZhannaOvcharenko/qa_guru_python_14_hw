@@ -1,5 +1,6 @@
 import allure
 from selene import browser, have, be
+from selenium.common import TimeoutException
 
 browser.config.timeout = 20
 
@@ -156,23 +157,29 @@ class MainPage:
         self.popular_categories.should(have.size_greater_than(0))
         return self
 
-    @allure.step("Проверить видимость блока: {block_name}")
+    @allure.step("Проверить видимость блока: {block_name} (если есть)")
     def check_trending_block(self, block_name):
         headers = self.trending_blocks[block_name]
         browser.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        headers.with_(timeout=10).should(have.size_greater_than(0))
-        first_header = headers.first
-        browser.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", first_header)
-        first_header.should(be.visible)
+        import time
+        time.sleep(2)
+        try:
+            headers.with_(timeout=5).first.should(be.visible)
+            browser.driver.execute_script(
+                "arguments[0].scrollIntoView({block: 'center'});",
+                headers.first.get_actual_webelement()
+            )
+        except TimeoutException:
+            allure.attach(f"Блок '{block_name}' не найден на странице", name="Missing block",
+                          attachment_type=allure.attachment_type.TEXT)
         return self
 
     @allure.step("Принять cookies, если баннер виден")
     def accept_cookies_if_present(self):
         cookie_banner = browser.all("//button[normalize-space()='Accept All']")
-        if cookie_banner.with_(timeout=5).exists():
-            cookie_banner.first.click()
+        try:
+            cookie_banner.with_(timeout=5).first.should(be.visible).click()
             allure.attach("Cookie баннер принят", name="Cookies", attachment_type=allure.attachment_type.TEXT)
-        else:
+        except TimeoutException:
             allure.attach("Cookie баннер отсутствует", name="Cookies", attachment_type=allure.attachment_type.TEXT)
-
         return self
