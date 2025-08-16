@@ -156,28 +156,22 @@ class MainPage:
         self.popular_categories.should(have.size_greater_than(0))
         return self
 
-    @allure.step("Проверить видимость блока: {block_name} (если есть)")
+    @allure.step("Проверить видимость блока: {block_name}")
     def check_trending_block(self, block_name):
         headers = self.trending_blocks[block_name]
         browser.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        import time
-        time.sleep(3)
-        elements = headers()
-        if len(elements) > 0:
-            header = elements[0]
-            browser.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", header)
-            browser.element(header).should(be.visible)
-        else:
-            allure.attach(f"Блок '{block_name}' не найден на странице", name="Missing block")
+        headers.with_(timeout=10).should(have.size_greater_than(0))
+        first_header = headers.first
+        browser.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", first_header)
+        first_header.should(be.visible)
         return self
 
     @allure.step("Принять cookies, если баннер виден")
     def accept_cookies_if_present(self):
         cookie_banner = browser.all("//button[normalize-space()='Accept All']")
-        if cookie_banner.with_(timeout=5).wait.until(have.size_greater_than_or_equal(0)):
-            if cookie_banner:
-                cookie_banner.first.click()
-                allure.attach("Cookie баннер принят", name="Cookies", attachment_type=allure.attachment_type.TEXT)
+        if cookie_banner.with_(timeout=5).exists():
+            cookie_banner.first.click()
+            allure.attach("Cookie баннер принят", name="Cookies", attachment_type=allure.attachment_type.TEXT)
         else:
             allure.attach("Cookie баннер отсутствует", name="Cookies", attachment_type=allure.attachment_type.TEXT)
 
