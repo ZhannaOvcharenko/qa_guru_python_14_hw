@@ -5,7 +5,6 @@ from pages.main_page import MainPage
 main_page = MainPage()
 
 
-@allure.id("1")
 @allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
@@ -24,7 +23,6 @@ def test_laptops_filters():
         )
 
 
-@allure.id("2")
 @allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
@@ -43,7 +41,6 @@ def test_smartphones_filters():
         )
 
 
-@allure.id("3")
 @allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
@@ -62,7 +59,6 @@ def test_watches_filters():
         )
 
 
-@allure.id("4")
 @allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
@@ -81,7 +77,6 @@ def test_tablets_filters():
         )
 
 
-@allure.id("5")
 @allure.tag("web")
 @allure.severity(Severity.NORMAL)
 @allure.label("owner", "ZhannaOvcharenko")
@@ -100,7 +95,6 @@ def test_cameras_filters():
         )
 
 
-@allure.id("6")
 @allure.tag("web")
 @allure.severity(Severity.MINOR)
 @allure.label("owner", "ZhannaOvcharenko")
